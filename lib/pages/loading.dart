@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import 'dart:convert';
+import 'package:world_time/services/world_time.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 
 class Loading extends StatefulWidget {
   
@@ -11,22 +12,22 @@ class Loading extends StatefulWidget {
 
 class _LoadingState extends State<Loading> {
 
-
-int counter = 0;
-  void getTime() async {
-
-  // make  the request
-  Response response = await get('https://worldtimeapi.org/api/timezone/Europe/London');
-  Map data = jsonDecode(response.body);
-  print(data);
-
+   void setupWorldTime() async {
+    WorldTime instance = WorldTime(location: 'Berlin', flag: 'germany.png', url: 'Europe/Berlin');
+    await instance.getTime();
+    Navigator.pushReplacementNamed(context, '/home', arguments: {
+    'location': instance.location,
+    'flag': instance.flag,
+    'time': instance.time,
+    'isDaytime': instance.isDaytime,
+   });
+    
   }
 
-
-  @override
+   @override
   void initState() {
     super.initState();
-    getData();
+    setupWordTime();
     
   }
 
@@ -34,7 +35,13 @@ int counter = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text('loading screen'),
+      backgroundColor: Colors.blue[900],
+      body: Center(
+        child:  SpinKitSpinningLines(
+        color: Colors.white,
+        size: 80.0,
+        ),
+      ),
     );
   }
 }

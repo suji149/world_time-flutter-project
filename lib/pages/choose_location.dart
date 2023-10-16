@@ -1,18 +1,17 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
-import 'package:flutter project/services/world_time.dart';
+import 'package:first/services/world_time.dart';
 
 class ChooseLocation extends StatefulWidget {
   
   @override
-  State<ChooseLocation> createState() => _ChooseLocationState();
+  _ChooseLocationState createState() => _ChooseLocationState();
 }
 
 class _ChooseLocationState extends State<ChooseLocation> {
 
   
   List<WorldTime> locations = [
+
     WorldTime(url: 'Europe/London', location: 'London', flag: 'uk.png'),
     WorldTime(url: 'Europe/Berlin', location:'Athens', flag: 'greece.png'),
     WorldTime(url: 'Africa/Cairo', location: 'Cairo', flag: 'egypt.png'),
@@ -23,10 +22,24 @@ class _ChooseLocationState extends State<ChooseLocation> {
     WorldTime(url: 'Asia/Jakarta', location: 'Jakarta', flag: 'indonesia.png'),
   ];
 
+  @override
+    void initState() {
+    super.initState();
+  }
+  void updateTime(index) async {
+    WorldTime instance = locations[index];
+    await instance.getTime();
+    // navidate to home screen
+    Navigator.pop(context, {
+      'location': instance.location,
+      'flag': instance.flag,
+      'time': instance.time,
+      'isDaytime': instance.isDaytime,
+    });
 
+  }
   @override
   Widget build(BuildContext context) {
-    print('build function ran');
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
@@ -39,10 +52,18 @@ class _ChooseLocationState extends State<ChooseLocation> {
       body: ListView.builder(
         itemCount: locations.length,
         itemBuilder: (context,index){
-          return Card(
-            child: ListTile(
-              onTap: () {},
-              title: Text(locations[index].location),
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 4.0),
+            child: Card(
+              child: ListTile(
+                onTap: () {
+                 updateTime(index);
+                },
+                title: Text(locations[index].location ?? 'Default Location'),
+                leading: CircleAvatar(
+                  backgroundImage: AssetImage('assets/${locations[index].flag}'),
+                ),
+              ),
             ),
           );
         }

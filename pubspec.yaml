@@ -33,7 +33,7 @@ dependencies:
   http: ^1.1.0
   intl: ^0.18.1
   flutter_spinkit: ^5.2.0
-  cupertino_icons: ^1.0.6
+  
 
 
 
@@ -80,7 +80,7 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   # fonts:
-  #   - family: Schyler
+  #   - family: Schylergit
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
